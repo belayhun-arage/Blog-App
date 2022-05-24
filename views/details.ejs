@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %> 
+<body>
+    <%- include('./partials/nav.ejs') %> 
+    <div class="details">
+        <h1><%= blog.title %> </h1>
+        <div class="content">
+            <h3><%= blog.snippet %></h3>
+            <h6><%= blog.body %></h6>
+        </div>   
+        <a class="delete" data-doc="<%= blog._id %>">delete</a>
+    </div>
+    <%- include('./partials/footer.ejs') %>
+    <script>
+        const trashcan = document.querySelector('a.delete');
+
+        trashcan.addEventListener('click',(e)=>{
+            //prepare the url where the delete requiest will be sent
+            const endpoint = `/blogs/${trashcan.dataset.doc}`;
+
+            //use the fetch api
+            //ajax requiest
+            fetch(endpoint,{
+                method : "DELETE"
+            })
+            .then((response)=>response.json())
+            .then((data)=>window.location.href= data.redirect)
+            .catch((err)=>console.log(err));
+        })
+    </script>
+</body>
+</html>
